@@ -1,18 +1,73 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="ma-1 pa-1">
+    <v-select
+      v-model="type"
+      :items="items"
+      label="Type"
+      outlined
+      single-line
+    ></v-select>
+    <v-text-field label="Base Word" v-model="baseWord" @change="onWordChange"></v-text-field>
+
+    <template v-if="type === 'Noun'">
+      <noun :word="baseWord" />
+    </template>
+    <template v-else-if="type === 'Verb'">
+      <verb :word="baseWord" />
+    </template>
+    <template v-else-if="type === 'Adverb'">
+      <adverb :word="baseWord" />
+    </template>
+    <template v-else-if="type === 'Adjective'">
+      <adjective :word="baseWord" />
+    </template>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Noun from "../components/Noun.vue";
+import Verb from "../components/Verb.vue";
+import Adverb from "../components/Adverb.vue";
+import Adjective from "../components/Adjective.vue";
+import Axios from "axios";
+import { mapState } from "vuex";
 
 export default {
-  name: 'Home',
+  name: "Home",
+  data: () => ({
+    type: "Noun",
+    items: ["Noun", "Verb", "Adverb", "Adjective"],
+    baseWord: "",
+    makingRequest: false,
+    unsplash: [],
+  }),
   components: {
-    HelloWorld
-  }
-}
+    Noun,
+    Verb,
+    Adverb,
+    Adjective,
+  },
+  computed: {
+    ...mapState({
+      apiKey: state => state.credentials.unsplashApiKey
+    }),
+  },
+  methods: {
+    onWordChange() {
+      if (this.makingRequest) {
+        return;
+      }
+      this.makingRequest = true;
+      setTimeout(() => {
+        Axios.get(
+          `https://api.unsplash.com/search/photos?page=1&query=${this.baseWord}&client_id=${this.apiKey}`
+        ).then((resp) => {
+          this.unsplash = resp.data.results;
+        });
+        this.makingRequest = false;
+      }, 1000);
+    },
+    reset() {},
+  },
+};
 </script>
