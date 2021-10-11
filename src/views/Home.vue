@@ -7,20 +7,13 @@
       outlined
       single-line
     ></v-select>
-    <v-text-field label="Base Word" v-model="baseWord" @change="onWordChange"></v-text-field>
-
-    <template v-if="type === 'Noun'">
-      <noun :word="baseWord" />
-    </template>
-    <template v-else-if="type === 'Verb'">
-      <verb :word="baseWord" />
-    </template>
-    <template v-else-if="type === 'Adverb'">
-      <adverb :word="baseWord" />
-    </template>
-    <template v-else-if="type === 'Adjective'">
-      <adjective :word="baseWord" />
-    </template>
+    <v-text-field label="Word" v-model="baseWord" v-on:blur="onWordChange"></v-text-field>
+    <v-text-field label="Meaning" v-model="meaning"></v-text-field>
+    <noun :word="baseWord" v-if="type === 'Noun'"/>
+    <verb :word="baseWord" v-else-if="type === 'Verb'"/>
+    <adverb :word="baseWord" v-else-if="type === 'Adverb'"/>
+    <adjective :word="baseWord" v-else-if="type === 'Adjective'" />
+    <image-selector />
   </div>
 </template>
 
@@ -29,6 +22,7 @@ import Noun from "../components/Noun.vue";
 import Verb from "../components/Verb.vue";
 import Adverb from "../components/Adverb.vue";
 import Adjective from "../components/Adjective.vue";
+import ImageSelector from "../components/ImageSelector.vue"
 import Axios from "axios";
 import { mapState } from "vuex";
 
@@ -38,6 +32,7 @@ export default {
     type: "Noun",
     items: ["Noun", "Verb", "Adverb", "Adjective"],
     baseWord: "",
+    meaning: "",
     makingRequest: false,
     unsplash: [],
   }),
@@ -46,6 +41,7 @@ export default {
     Verb,
     Adverb,
     Adjective,
+    ImageSelector,
   },
   computed: {
     ...mapState({
