@@ -37,7 +37,7 @@ export default {
     unsplashApiKey: "",
     unsplashApiSecret: "",
     oxfordAppID: "",
-    oxforedAppKey: "",
+    oxfordAppKey: "",
   }),
   methods: {
     submit() {

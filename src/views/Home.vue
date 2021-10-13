@@ -9,10 +9,10 @@
     ></v-select>
     <v-text-field label="Word" v-model="baseWord" v-on:blur="onWordChange"></v-text-field>
     <v-text-field label="Meaning" v-model="meaning"></v-text-field>
-    <noun :word="baseWord" v-if="type === 'Noun'"/>
-    <verb :word="baseWord" v-else-if="type === 'Verb'"/>
-    <adverb :word="baseWord" v-else-if="type === 'Adverb'"/>
-    <adjective :word="baseWord" v-else-if="type === 'Adjective'" />
+    <noun v-bind:baseWord="baseWord" v-if="type === 'Noun'"/>
+    <verb v-bind:baseWord="baseWord" v-else-if="type === 'Verb'"/>
+    <adverb v-bind:baseWord="baseWord" v-else-if="type === 'Adverb'"/>
+    <adjective v-bind:baseWord="baseWord" v-else-if="type === 'Adjective'" />
     <image-selector />
   </div>
 </template>
