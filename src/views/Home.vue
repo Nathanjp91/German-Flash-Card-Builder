@@ -1,4 +1,5 @@
 <template>
+<v-card>
   <div class="ma-1 pa-1">
     <v-select
       v-model="type"
@@ -6,15 +7,18 @@
       label="Type"
       outlined
       single-line
+      v-on:change="baseWord = ''"
     ></v-select>
-    <v-text-field label="Word" v-model="baseWord" v-on:blur="onWordChange"></v-text-field>
-    <v-text-field label="Meaning" v-model="meaning"></v-text-field>
+    <v-text-field label="Word" v-model="baseWord"></v-text-field>
+    <v-text-field label="Meaning" v-model="meaning" v-on:blur="onWordChange"></v-text-field>
     <noun v-bind:baseWord="baseWord" v-if="type === 'Noun'"/>
     <verb v-bind:baseWord="baseWord" v-else-if="type === 'Verb'"/>
     <adverb v-bind:baseWord="baseWord" v-else-if="type === 'Adverb'"/>
     <adjective v-bind:baseWord="baseWord" v-else-if="type === 'Adjective'" />
-    <image-selector />
+    <v-progress-circular v-if="makingRequest" indeterminate color="primary" :size="70" :width="7"></v-progress-circular>
+    <image-selector v-if="unsplash.length > 0 && !makingRequest" v-bind:unsplash="unsplash"/>
   </div>
+</v-card>
 </template>
 
 <script>
@@ -51,12 +55,13 @@ export default {
   methods: {
     onWordChange() {
       if (this.makingRequest) {
+        this.unsplash = []
         return;
       }
       this.makingRequest = true;
       setTimeout(() => {
         Axios.get(
-          `https://api.unsplash.com/search/photos?page=1&query=${this.baseWord}&client_id=${this.apiKey}`
+          `https://api.unsplash.com/search/photos?page=1&query=${this.meaning}&client_id=${this.apiKey}`
         ).then((resp) => {
           this.unsplash = resp.data.results;
         });

@@ -25,21 +25,18 @@ export default {
       
       masculineEndings.forEach(ending => {
         if (this.baseWord.toLowerCase().endsWith(ending)) {
-          console.log(ending)
           this.gender = 'Masculine'
           return
         }
       });
       feminineEndings.forEach(ending => {
         if (this.baseWord.toLowerCase().endsWith(ending)) {
-          console.log(ending)
           this.gender = 'Feminine'
           return
         }
       });
       neutralEndings.forEach(ending => {
         if (this.baseWord.toLowerCase().endsWith(ending)) {
-          console.log(ending)
           this.gender = 'Neutral'
           return
         }
