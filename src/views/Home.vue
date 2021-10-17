@@ -49,7 +49,9 @@ export default {
   },
   computed: {
     ...mapState({
-      apiKey: state => state.credentials.unsplashApiKey
+      unsplashApiKey: state => state.credentials.unsplashApiKey,
+      oxfordAppID: state => state.credentials.oxfordAppID,
+      oxfordAppKey: state => state.credentials.oxfordAppKey
     }),
   },
   methods: {
@@ -61,10 +63,20 @@ export default {
       this.makingRequest = true;
       setTimeout(() => {
         Axios.get(
-          `https://api.unsplash.com/search/photos?page=1&query=${this.meaning}&client_id=${this.apiKey}`
+          `https://api.unsplash.com/search/photos?page=1&query=${this.meaning}&client_id=${this.unsplashApiKey}`
         ).then((resp) => {
           this.unsplash = resp.data.results;
         });
+        // Axios.get(
+        //   `https://od-api.oxforddictionaries.com/api/v2/entires/de/${this.baseWord}`, {
+        //     headers: {
+        //       app_id: this.oxfordAppID,
+        //       app_key: this.oxfordAppKey
+        //     }
+        //   }
+        // ).then((resp) => {
+        //   console.log(resp)
+        // })
         this.makingRequest = false;
       }, 1000);
     },

@@ -1,27 +1,27 @@
 <template>
   <v-card
     class="d-flex flex-wrap"
-    color="grey lighten-2"
+    color="lighten-2"
     flat
     tile
   >
     <v-card
       v-for="image in unsplash"
       :key='image.id'
-      v-on:click="swapSelected(image.id)"
+      @click="swapSelected(image.id)"
+      class='ma-1 pa-1'
+      @focus='focused=image.id'
+      :color="getColour(image.id)"
+      hover
+      @keyup.space='swapSelected(image.id)'
     >
-    <div
-      :class="selected.includes(image.id) ? 'selectedClass' : 'notSelectedClass'"
-    >
-
-    </div>
       <v-img
         :src='image.urls.thumb'
         max-height="200"
         max-width="200"
       >
-
       </v-img>
+
     </v-card>
   </v-card>
 </template>
@@ -32,9 +32,16 @@ export default {
     unsplash: Array,
   },
   data: () => ({
-    selected: []
+    selected: [],
+    focused: null,
   }),
   methods: {
+    getColour: function(id) {
+      if (this.focused === id && this.selected.includes(id)) { return 'purple' }
+      if (this.focused === id) { return 'orange' }
+      if (this.selected.includes(id)) {return 'primary'}
+      else return "white"
+    },
     addSelected: function(id) {
       if (!this.selected.includes(id)) { this.selected.push(id) }
     },
@@ -51,9 +58,16 @@ export default {
 
 <style>
 .selectedClass {
-  width: 200;
+  border: 4px solid cornflowerblue;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 }
 .notSelectedClass {
   width: 100;
+}
+.v-card {
+  background-color: crimson;
+  color: crimson;
 }
 </style>

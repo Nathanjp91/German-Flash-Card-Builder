@@ -44,7 +44,7 @@ export default {
       localStorage.setItem("unsplashApiKey", this.unsplashApiKey);
       localStorage.setItem("unsplashApiSecret", this.unsplashApiSecret);
       localStorage.setItem("oxfordAppID", this.oxfordAppID);
-      localStorage.setItem("oxforedAppKey", this.oxforedAppKey);
+      localStorage.setItem("oxfordAppKey", this.oxfordAppKey);
       this.setCredentials({
         unsplashApiKey: this.unsplashApiKey,
         unsplashApiSecret: this.unsplashApiSecret,
@@ -69,10 +69,10 @@ export default {
       localStorage.getItem("oxfordAppID") == "null"
         ? ""
         : localStorage.getItem("oxfordAppID");
-    this.oxforedAppKey =
-      localStorage.getItem("oxforedAppKey") == "null"
+    this.oxfordAppKey =
+      localStorage.getItem("oxfordAppKey") == "null"
         ? ""
-        : localStorage.getItem("oxforedAppKey");
+        : localStorage.getItem("oxfordAppKey");
     this.setCredentials({
       unsplashApiKey: this.unsplashApiKey,
       unsplashApiSecret: this.unsplashApiSecret,
