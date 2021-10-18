@@ -1,24 +1,39 @@
 <template>
-<v-card>
-  <div class="ma-1 pa-1">
-    <v-select
-      v-model="type"
-      :items="items"
-      label="Type"
-      outlined
-      single-line
-      v-on:change="baseWord = ''"
-    ></v-select>
-    <v-text-field label="Word" v-model="baseWord"></v-text-field>
-    <v-text-field label="Meaning" v-model="meaning" v-on:blur="onWordChange"></v-text-field>
-    <noun v-bind:baseWord="baseWord" v-if="type === 'Noun'"/>
-    <verb v-bind:baseWord="baseWord" v-else-if="type === 'Verb'"/>
-    <adverb v-bind:baseWord="baseWord" v-else-if="type === 'Adverb'"/>
-    <adjective v-bind:baseWord="baseWord" v-else-if="type === 'Adjective'" />
-    <v-progress-circular v-if="makingRequest" indeterminate color="primary" :size="70" :width="7"></v-progress-circular>
-    <image-selector v-if="unsplash.length > 0 && !makingRequest" v-bind:unsplash="unsplash"/>
-  </div>
-</v-card>
+  <v-card>
+    <v-container grid-list-xs fluid class='ma-0 pa-0'>
+      <v-row no-gutters dense>
+        <v-col cols='3'>
+          <list-view />
+        </v-col>
+        <v-col>
+          <v-expand-transition>
+            <div class="ma-1 pa-1">
+              <v-select
+                v-model="type"
+                :items="items"
+                label="Type"
+                outlined
+                single-line
+                v-on:change="baseWord = ''"
+              ></v-select>
+              <v-text-field label="Word" v-model="baseWord"></v-text-field>
+              <v-text-field label="Meaning" v-model="meaning" v-on:blur="onWordChange"></v-text-field>
+              <noun v-bind:baseWord="baseWord" v-if="type === 'Noun'"/>
+              <verb v-bind:baseWord="baseWord" v-else-if="type === 'Verb'"/>
+              <adverb v-bind:baseWord="baseWord" v-else-if="type === 'Adverb'"/>
+              <adjective v-bind:baseWord="baseWord" v-else-if="type === 'Adjective'" />
+              <v-progress-circular v-if="makingRequest" indeterminate color="primary" :size="70" :width="7"></v-progress-circular>
+              <image-selector v-if="unsplash.length > 0 && !makingRequest" v-bind:unsplash="unsplash"/>
+              <div class='text-right'>
+                <v-btn color="success">Submit</v-btn>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-col>
+
+      </v-row>
+    </v-container>
+  </v-card>
 </template>
 
 <script>
@@ -27,12 +42,14 @@ import Verb from "../components/Verb.vue";
 import Adverb from "../components/Adverb.vue";
 import Adjective from "../components/Adjective.vue";
 import ImageSelector from "../components/ImageSelector.vue"
+import ListView from "../components/ListView.vue";
 import Axios from "axios";
 import { mapState } from "vuex";
 
 export default {
   name: "Home",
   data: () => ({
+    expanded: false,
     type: "Noun",
     items: ["Noun", "Verb", "Adverb", "Adjective"],
     baseWord: "",
@@ -46,6 +63,7 @@ export default {
     Adverb,
     Adjective,
     ImageSelector,
+    ListView,
   },
   computed: {
     ...mapState({

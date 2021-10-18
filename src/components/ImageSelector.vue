@@ -20,6 +20,9 @@
         max-height="200"
         max-width="200"
       >
+      <div v-if="selected.includes(image.id)">
+        <v-icon class='primary--text text-h3'>mdi-check-circle-outline</v-icon>
+      </div>
       </v-img>
 
     </v-card>
@@ -37,7 +40,6 @@ export default {
   }),
   methods: {
     getColour: function(id) {
-      if (this.focused === id && this.selected.includes(id)) { return 'purple' }
       if (this.focused === id) { return 'orange' }
       if (this.selected.includes(id)) {return 'primary'}
       else return "white"
@@ -57,15 +59,6 @@ export default {
 </script>
 
 <style>
-.selectedClass {
-  border: 4px solid cornflowerblue;
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-}
-.notSelectedClass {
-  width: 100;
-}
 .v-card {
   background-color: crimson;
   color: crimson;

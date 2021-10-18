@@ -10,7 +10,24 @@ export default new Vuex.Store({
       unsplashApiSecret: "",
       oxfordAppID: "",
       oxforedAppKey: ""
-    }
+    },
+    cards: [
+      { 
+        type: 'noun',
+        content: {
+          word: 'Katze',
+          gender: 'Feminine',
+          images: [],
+        }
+      },
+      {
+        type: 'verb',
+        content: {
+          word: 'Essen',
+          images: []
+        }
+      }
+    ]
   },
   mutations: {
     setCredentials(state, payload) {
