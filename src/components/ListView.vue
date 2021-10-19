@@ -1,17 +1,32 @@
 <template>
   <v-list flat>
-    <v-subheader>Cards</v-subheader>
+    <v-subheader>
+      {{ cards.length }} Cards - {{nouns.length}}n/{{verbs.length}}v/{{others.length}}o
+      <v-spacer></v-spacer>
+      <v-btn icon color='primary'><v-icon>mdi-reload</v-icon></v-btn>
+      <v-btn icon color='primary'><v-icon>mdi-upload</v-icon></v-btn>
+      <v-btn icon color='primary'><v-icon>mdi-download</v-icon></v-btn>
+
+    </v-subheader>
     <v-text-field
       label="filter"
-      class='ma-1 pa-1'
+      class="ma-1 pa-1"
       v-model="filter"
     ></v-text-field>
-    <v-list-item dense v-for="(card, index) in summaries" :key="index"
-    @mouseenter="highlight = index"
-        @mouseout="highlight = -1"
-        >
-        <v-btn text>{{ card }}</v-btn>
-    </v-list-item>
+    <v-virtual-scroll
+      :items='filtered'
+      :bench="15"
+      height="300"
+      item-height="40"
+    >
+      <template
+        v-slot:default="{ item }"
+      >
+      <v-list-item :key="item.content.word">
+        <v-btn :color='cardColor(item)' class='lighten-3' width="100%">{{ cardText(item) }}</v-btn>
+      </v-list-item>
+      </template>
+    </v-virtual-scroll>
   </v-list>
 </template>
 
@@ -19,9 +34,23 @@
 import { mapState } from "vuex";
 export default {
   data: () => ({
-    filter: '',
+    filter: "",
     highlight: -1,
   }),
+  methods: {
+    cardText: function(card) {
+      return `${card.type[0]} - ${card.content.word} - ${card.content.images.length} images`;
+    },
+    cardColor: function(card) {
+      if (card.type === 'verb') { return 'yellow' }
+      else if (card.type === 'noun') {
+        if(card.content.gender === 'Masculine') { return 'purple' }
+        if(card.content.gender === 'Neutral') { return 'green' }
+        if(card.content.gender === 'Feminine') { return 'orange' }
+      }
+      else return 'grey'
+    }
+  },
   computed: {
     ...mapState({
       cards: (state) => state.cards,
@@ -31,9 +60,22 @@ export default {
         return `${card.type[0]} - ${card.content.word} - ${card.content.images.length} images`;
       });
     },
-    filtered: function() {
-      if (this.filter === '') { return this.cards}
-      return this.cards.filter((card) => card.content.word.toLowerCase().includes(this.filter))
+    filtered: function () {
+      if (this.filter === "") {
+        return this.cards;
+      }
+      return this.cards.filter((card) =>
+        card.content.word.toLowerCase().includes(this.filter)
+      );
+    },
+    nouns: function() {
+      return this.cards.filter((card) => card.type === 'noun')
+    },
+    verbs: function() {
+      return this.cards.filter((card) => card.type === 'verb')
+    },
+    others: function() {
+      return this.cards.filter((card) => !(card.type === 'verb' || card.type === 'noun'))
     }
   },
 };

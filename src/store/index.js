@@ -26,6 +26,13 @@ export default new Vuex.Store({
           word: 'Essen',
           images: []
         }
+      },
+      {
+        type: 'adjective',
+        content: {
+          word: 'Blau',
+          images: []
+        }
       }
     ]
   },
