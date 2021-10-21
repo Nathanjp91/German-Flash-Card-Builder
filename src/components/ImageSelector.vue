@@ -11,7 +11,7 @@
       @click="swapSelected(image)"
       class='ma-1 pa-1'
       @focus='focused=image.id'
-      :color="getColour(image.id)"
+      :color="getColour(image)"
       hover
       @keyup.space='swapSelected(image)'
     >
@@ -26,6 +26,29 @@
       </v-img>
 
     </v-card>
+    <div v-if="unsplash.length === 0">
+      <v-card
+      v-for="image in selected"
+      :key='image.id'
+      @click="swapSelected(image)"
+      class='ma-1 pa-1'
+      @focus='focused=image.id'
+      :color="getColour(image)"
+      hover
+      @keyup.space='swapSelected(image)'
+    >
+      <v-img
+        :src='image.url'
+        max-height="200"
+        max-width="200"
+      >
+      <div v-if="checked.includes(image.id)">
+        <v-icon class='primary--text text-h3'>mdi-check-circle-outline</v-icon>
+      </div>
+      </v-img>
+
+    </v-card>
+    </div>
   </v-card>
 </template>
 
@@ -56,9 +79,9 @@ export default {
     ...mapActions([
       'updateCard'
     ]),
-    getColour: function(id) {
-      if (this.focused === id) { return 'orange' }
-      if (this.selected.includes(id)) {return 'primary'}
+    getColour: function(image) {
+      if (this.focused === image.id) { return 'orange' }
+      if (this.checked.includes(image.id)) {return 'primary'}
       else return "white"
     },
     swapSelected: function(image) {
