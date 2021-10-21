@@ -113,6 +113,7 @@ export default {
         });
         this.makingRequest = false;
       }, 1000);
+      this.updateCard({images: []})
     },
     reset() {},
   },
