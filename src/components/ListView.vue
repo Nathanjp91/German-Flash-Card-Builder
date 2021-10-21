@@ -22,7 +22,7 @@
       <template
         v-slot:default="{ item }"
       >
-      <v-list-item :key="item.content.word">
+      <v-list-item :key="item.word">
         <v-btn :color='cardColor(item)' class='lighten-3' width="100%">{{ cardText(item) }}</v-btn>
       </v-list-item>
       </template>
@@ -39,14 +39,14 @@ export default {
   }),
   methods: {
     cardText: function(card) {
-      return `${card.type[0]} - ${card.content.word} - ${card.content.images.length} images`;
+      return `${card.type[0]} - ${card.word} - ${card.images.length} images`;
     },
     cardColor: function(card) {
       if (card.type === 'verb') { return 'yellow' }
       else if (card.type === 'noun') {
-        if(card.content.gender === 'Masculine') { return 'purple' }
-        if(card.content.gender === 'Neutral') { return 'green' }
-        if(card.content.gender === 'Feminine') { return 'orange' }
+        if(card.gender === 'Masculine') { return 'purple' }
+        if(card.gender === 'Neutral') { return 'green' }
+        if(card.gender === 'Feminine') { return 'orange' }
       }
       else return 'grey'
     }
@@ -57,7 +57,7 @@ export default {
     }),
     summaries: function () {
       return this.filtered.map((card) => {
-        return `${card.type[0]} - ${card.content.word} - ${card.content.images.length} images`;
+        return `${card.type[0]} - ${card.word} - ${card.images.length} images`;
       });
     },
     filtered: function () {

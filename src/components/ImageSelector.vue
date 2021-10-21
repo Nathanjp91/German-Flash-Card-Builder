@@ -8,19 +8,19 @@
     <v-card
       v-for="image in unsplash"
       :key='image.id'
-      @click="swapSelected(image.id)"
+      @click="swapSelected(image)"
       class='ma-1 pa-1'
       @focus='focused=image.id'
       :color="getColour(image.id)"
       hover
-      @keyup.space='swapSelected(image.id)'
+      @keyup.space='swapSelected(image)'
     >
       <v-img
         :src='image.urls.thumb'
         max-height="200"
         max-width="200"
       >
-      <div v-if="selected.includes(image.id)">
+      <div v-if="checked.includes(image.id)">
         <v-icon class='primary--text text-h3'>mdi-check-circle-outline</v-icon>
       </div>
       </v-img>
@@ -30,29 +30,40 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     unsplash: Array,
   },
   data: () => ({
-    selected: [],
     focused: null,
   }),
+  computed: {
+    selected: {
+      get() {
+        return this.$store.state.currentCard.images
+      },
+      set(value) {
+        this.$store.commit('updateCard', {images: value})
+      } 
+    },
+    checked() {
+      return this.selected.map((image) => image.id)
+    }
+  },
   methods: {
+    ...mapActions([
+      'updateCard'
+    ]),
     getColour: function(id) {
       if (this.focused === id) { return 'orange' }
       if (this.selected.includes(id)) {return 'primary'}
       else return "white"
     },
-    addSelected: function(id) {
-      if (!this.selected.includes(id)) { this.selected.push(id) }
-    },
-    removeSelected: function(id) {
-      this.selected = this.selected.filter((el) => el !== id)
-    },
-    swapSelected: function(id) {
-      if (!this.selected.includes(id)) { this.selected.push(id) }
-      else { this.selected = this.selected.filter((el) => el !== id) }
+    swapSelected: function(image) {
+      if (!this.checked.includes(image.id)) { this.selected = [...this.selected, {id: image.id, url: image.urls.regular}] }
+      else { this.selected = this.selected.filter((el) => el.id !== image.id) }
     }
   }
 }

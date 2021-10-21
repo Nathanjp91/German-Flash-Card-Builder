@@ -14,16 +14,15 @@
                 label="Type"
                 outlined
                 single-line
-                v-on:change="baseWord = ''"
               ></v-select>
               <v-text-field label="Word" v-model="baseWord"></v-text-field>
-              <v-text-field label="Meaning" v-model="meaning" v-on:blur="onWordChange"></v-text-field>
+              <v-text-field label="Meaning" v-model="meaning" v-on:blur="updateWord"></v-text-field>
               <noun v-bind:baseWord="baseWord" v-if="type === 'Noun'"/>
               <verb v-bind:baseWord="baseWord" v-else-if="type === 'Verb'"/>
               <adverb v-bind:baseWord="baseWord" v-else-if="type === 'Adverb'"/>
               <adjective v-bind:baseWord="baseWord" v-else-if="type === 'Adjective'" />
               <v-progress-circular v-if="makingRequest" indeterminate color="primary" :size="70" :width="7"></v-progress-circular>
-              <image-selector v-if="unsplash.length > 0 && !makingRequest" v-bind:unsplash="unsplash"/>
+              <image-selector v-if="!makingRequest" v-bind:unsplash="unsplash"/>
               <div class='text-right'>
                 <v-btn color="success">Submit</v-btn>
               </div>
@@ -44,16 +43,12 @@ import Adjective from "../components/Adjective.vue";
 import ImageSelector from "../components/ImageSelector.vue"
 import ListView from "../components/ListView.vue";
 import Axios from "axios";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Home",
   data: () => ({
-    expanded: false,
-    type: "Noun",
     items: ["Noun", "Verb", "Adverb", "Adjective"],
-    baseWord: "",
-    meaning: "",
     makingRequest: false,
     unsplash: [],
   }),
@@ -68,16 +63,47 @@ export default {
   computed: {
     ...mapState({
       unsplashApiKey: state => state.credentials.unsplashApiKey,
-      oxfordAppID: state => state.credentials.oxfordAppID,
-      oxfordAppKey: state => state.credentials.oxfordAppKey
     }),
+    type: {
+      get() {
+        return this.$store.state.currentCard.type
+      },
+      set(value) {
+        this.$store.commit('newCard')
+        this.$store.commit('updateCard', {type: value})
+      } 
+    },
+    baseWord: {
+      get() {
+        return this.$store.state.currentCard.word
+      },
+      set(value) {
+        this.$store.commit('updateCard', {word: value.capitalize()})
+      } 
+    },
+    meaning: {
+      get() {
+        return this.$store.state.currentCard.meaning
+      },
+      set(value) {
+        this.$store.commit('updateCard', {meaning: value.capitalize()})
+      } 
+    }
   },
   methods: {
-    onWordChange() {
+    ...mapActions([
+      'updateCard',
+      'newCard',
+    ]),
+    updatetype() {
+      this.newCard()
+    },
+    updateWord() {
       if (this.makingRequest) {
         this.unsplash = []
-        return;
+        return
       }
+      if (this.meaning === '') { return }
       this.makingRequest = true;
       setTimeout(() => {
         Axios.get(
@@ -85,20 +111,18 @@ export default {
         ).then((resp) => {
           this.unsplash = resp.data.results;
         });
-        // Axios.get(
-        //   `https://od-api.oxforddictionaries.com/api/v2/entires/de/${this.baseWord}`, {
-        //     headers: {
-        //       app_id: this.oxfordAppID,
-        //       app_key: this.oxfordAppKey
-        //     }
-        //   }
-        // ).then((resp) => {
-        //   console.log(resp)
-        // })
         this.makingRequest = false;
       }, 1000);
     },
     reset() {},
   },
+  mounted () {
+    Object.defineProperty(String.prototype, 'capitalize', {
+      value: function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      },
+      enumerable: false
+    });
+  }
 };
 </script>
