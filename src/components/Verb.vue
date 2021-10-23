@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    @keyup.ctrl='ctrl = true'
+    @keydown.ctrl='ctrl = false' 
+  >
     <v-container fluid class='ma-0 pa-0'>
       <v-row>
         <v-col>
@@ -141,6 +144,7 @@
 <script>
 export default {
   data: () => ({
+    ctrl: false,
     regular: true,
     conjugation: {
       ich: "",

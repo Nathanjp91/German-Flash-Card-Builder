@@ -14,34 +14,14 @@ export default new Vuex.Store({
     currentCard: {
       type: 'Noun',
       word: '',
+      plural: '',
       meaning: '',
-      example: '',
+      examples: [],
       gender: '',
       images: [],
       endings: {}
     },
-    cards: [
-      { 
-        type: 'noun',
-        word: 'Katze',
-        example: '',
-        gender: 'Feminine',
-        images: []
-      },
-      { 
-        type: 'verb',
-        word: 'Essen',
-        example: '',
-        endings: {},
-        images: []
-      },
-      { 
-        type: 'Adjective',
-        word: 'Blau',
-        example: '',
-        images: []
-      }
-    ]
+    cards: []
   },
   mutations: {
     setCredentials(state, payload) {
@@ -60,9 +40,12 @@ export default new Vuex.Store({
       state.currentCard = {
         type: 'Noun',
         word: '',
+        plural: '',
         meaning: '',
-        example: '',
+        examples: [],
+        gender: '',
         images: [],
+        endings: {}
       }
     },
     updateCard(state, payload) {
@@ -73,11 +56,13 @@ export default new Vuex.Store({
     setCredentials({commit}, payload) {
       commit('setCredentials', payload)
     },
-    addCard({commit, state}, payload) {
-      if (state.cards.filter((card) => card.word === payload.word).length >= 0) {
-        commit('deleteCard', payload)
+    addCard({commit, state}) {
+      const currenteCard = state.currentCard
+      if (state.cards.filter((card) => card.word === currenteCard.word).length >= 0) {
+        commit('deleteCard', currenteCard)
       }
-      commit('addCard', payload)
+      commit('addCard', currenteCard)
+      commit('newCard')
     },
     deleteCard({commit}, payload) {
       commit('deleteCard', payload)

@@ -10,7 +10,7 @@
       :key='image.id'
       @click="swapSelected(image)"
       class='ma-1 pa-1'
-      @focus='focused=image.id'
+      @focus='focusCard(image.id)'
       :color="getColour(image)"
       hover
       @keyup.space='swapSelected(image)'
@@ -43,7 +43,7 @@
         max-width="200"
       >
       <div v-if="checked.includes(image.id)">
-        <v-icon class='primary--text text-h3'>mdi-check-circle-outline</v-icon>
+        <v-icon class='primary--text text-h3 '>mdi-check-circle-outline</v-icon>
       </div>
       </v-img>
 
@@ -87,14 +87,21 @@ export default {
     swapSelected: function(image) {
       if (!this.checked.includes(image.id)) { this.selected = [...this.selected, {id: image.id, url: image.urls.regular}] }
       else { this.selected = this.selected.filter((el) => el.id !== image.id) }
+    },
+    focusCard(id) {
+      this.focused = id
+      this.$emit('focused')
     }
   }
 }
 </script>
 
-<style>
-.v-card {
-  background-color: crimson;
-  color: crimson;
+<style scoped>
+
+.v-icon {
+  background: white;
+  border-radius: 1em;
 }
+
+
 </style>
