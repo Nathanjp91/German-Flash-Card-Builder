@@ -2,7 +2,7 @@
   <v-card>
     <v-container grid-list-xs fluid class="ma-0 px-0">
       <v-row no-gutters dense>
-        <v-col cols="3" v-if="screenWidth >= 800">
+        <v-col cols="3" v-if="screenWidth >= 1024">
           <list-view />
         </v-col>
         <v-col v-else cols='1' class='ma-0 pa-3'>
@@ -23,8 +23,9 @@
             <v-expansion-panels accordion multiple v-model="panels">
               <v-expansion-panel>
                 <v-expansion-panel-header>
-                  {{ type }}{{ baseWord === "" ? "" : " - " + baseWord
-                  }}{{ meaning === "" ? "" : " - " + meaning }}
+                  {{ type }}
+                  {{ baseWord === "" ? "" : " - " + baseWord}}
+                  {{ meaning === "" ? "" : " - " + meaning }}
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-container grid-list-xs fluid class="ma-0 pa-0">

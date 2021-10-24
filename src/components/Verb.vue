@@ -3,6 +3,35 @@
     @keyup.ctrl='ctrl = true'
     @keydown.ctrl='ctrl = false' 
   >
+    <table width='100%'>
+      <tr class='ma-1 pa-1'>
+        <th class='ma-1 pa-1'>Case</th>
+        <v-spacer></v-spacer>
+        <th class='ma-1 pa-1'>Present</th>
+        <th class='ma-1 pa-1'>Simple Past</th>
+        <th class='ma-1 pa-1'>Simple Future</th>
+      </tr>
+      <tr>
+        <td>ich</td>
+        <v-spacer></v-spacer>
+      </tr>
+      <tr>
+        <td>du</td>
+      </tr>
+      <tr>
+        <td>er/sie/es</td>
+      </tr>
+      <tr>
+        <td>wir</td>
+      </tr>
+      <tr>
+        <td>ihr</td>
+      </tr>
+      <tr>
+        <td>Sie</td>
+      </tr>
+    </table>
+
     <v-container fluid class='ma-0 pa-0'>
       <v-row>
         <v-col>
@@ -206,4 +235,7 @@ export default {
 </script>
 
 <style>
+.conjugation-table {
+  list-style: none;
+}
 </style>
