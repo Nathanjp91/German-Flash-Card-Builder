@@ -3,175 +3,110 @@
     @keyup.ctrl='ctrl = true'
     @keydown.ctrl='ctrl = false' 
   >
-    <table width='100%'>
-      <tr class='ma-1 pa-1'>
-        <th class='ma-1 pa-1'>Case</th>
-        <v-spacer></v-spacer>
-        <th class='ma-1 pa-1'>Present</th>
-        <th class='ma-1 pa-1'>Simple Past</th>
-        <th class='ma-1 pa-1'>Simple Future</th>
-      </tr>
-      <tr>
-        <td>ich</td>
-        <v-spacer></v-spacer>
-      </tr>
-      <tr>
-        <td>du</td>
-      </tr>
-      <tr>
-        <td>er/sie/es</td>
-      </tr>
-      <tr>
-        <td>wir</td>
-      </tr>
-      <tr>
-        <td>ihr</td>
-      </tr>
-      <tr>
-        <td>Sie</td>
-      </tr>
-    </table>
-
-    <v-container fluid class='ma-0 pa-0'>
-      <v-row>
-        <v-col>
-          <div class='text-h6'>Present Tense</div>
-        </v-col>
-        <v-col>
-          <div class='text-h6'>Simple Past</div>
-        </v-col>
-      </v-row>
-      <v-row >
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="ich"
-            v-model="conjugation.ich"
-          ></v-text-field>
-        </v-col>
-        <v-col> 
-          <v-text-field
-            dense
-            hide-details
-            label="ich"
-            v-model="simplePast.ich"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="du"
-            v-model="conjugation.du"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="du"
-            v-model="simplePast.du"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="er/sie/es"
-            v-model="conjugation.erSieEs"
-          ></v-text-field>
-        </v-col>
-        <v-col><v-text-field
-            dense
-            hide-details
-            label="er/sie/es"
-            v-model="simplePast.erSieEs"
-          ></v-text-field></v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="wir"
-            v-model="conjugation.wir"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="wir"
-            v-model="simplePast.wir"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="ihr"
-            v-model="conjugation.ihr"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="ihr"
-            v-model="simplePast.ihr"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="Sie"
-            v-model="conjugation.Sie"
-          ></v-text-field>
-        </v-col>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="Sie"
-            v-model="simplePast.Sie"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-select
-            hide-details
-            :items="auxiliaryVerbOptions"
-            v-model="pastParticiple.auxiliaryVerb"
-            label="Auxiliary Verb"
-            dense
-          ></v-select>
-        </v-col>
-        <v-col>
-          <v-text-field
-            dense
-            hide-details
-            label="Past Participle"
-            v-model="pastParticiple.word"
-          ></v-text-field>
-        </v-col>
-      </v-row>
-    </v-container>
+  <v-container grid-list-xs>
+    <v-row>
+      <v-subheader>Past Perfect</v-subheader>
+    </v-row>
+    <v-row dense class='ma-0 pa-1'>
+      <v-col>
+        <v-select
+          :items="auxiliaryVerbOptions"
+          v-model="pastParticiple.auxiliaryVerb"
+          label="Auxiliary Verb"
+          width="100"
+        ></v-select>
+      </v-col>
+      <v-col>
+        <v-text-field
+          v-model='pastParticiple.word'
+          label="Perfect Form"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+  </v-container>
+    <v-simple-table dense fixed-header>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class='ma-1 pa-1 case-column text-center text-h7'>Case</th>
+            <th class='ma-1 pa-1 text-center text-h7'>Present</th>
+            <th class='ma-1 pa-1 text-center text-h7'>Simple Past</th>
+            <th class='ma-1 pa-1 text-center text-h8'>aux verb</th>
+            <th class='ma-1 pa-1 text-center text-h7'>Future I</th>
+            <th class='ma-1 pa-1 text-center text-h7'>Future II</th>
+            <th class='ma-1 pa-1 text-center text-h7'>end verb</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class='case-column ma-1 pa-1'>ich</td>
+            <td> <input type="text" v-model='conjugation.ich' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.ich' class='table-input py-0 px-2 text-center'> </td>
+            <td> werde </td>
+            <td> {{conjugation.ich}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+          <tr>
+            <td class='case-column ma-1 pa-1'>du</td>
+            <td> <input type="text" v-model='conjugation.du' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.du' class='table-input py-0 px-2 text-center'> </td>
+            <td> wirst </td>
+            <td> {{conjugation.du}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+          <tr>
+            <td class='case-column ma-1 pa-1'>er/sie/es</td>
+            <td> <input type="text" v-model='conjugation.erSieEs' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.erSieEs' class='table-input py-0 px-2 text-center'> </td>
+            <td> wird </td>
+            <td> {{conjugation.erSieEs}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+          <tr>
+            <td class='case-column ma-1 pa-1'>wir</td>
+            <td> <input type="text" v-model='conjugation.wir' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.wir' class='table-input py-0 px-2 text-center'> </td>
+            <td> werden </td>
+            <td> {{conjugation.wir}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+          <tr>
+            <td class='case-column ma-1 pa-1'>ihr</td>
+            <td> <input type="text" v-model='conjugation.ihr' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.ihr' class='table-input py-0 px-2 text-center'> </td>
+            <td> werdet </td>
+            <td> {{conjugation.ihr}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+          <tr>
+            <td class='case-column ma-1 pa-1'>Sie</td>
+            <td> <input type="text" v-model='conjugation.Sie' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='simplePast.Sie' class='table-input py-0 px-2 text-center'> </td>
+            <td> werden </td>
+            <td> {{conjugation.Sie}} </td>
+            <td> {{pastParticiple.word}} </td>
+            <td> {{pastParticiple.auxiliaryVerb}} </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+    <v-divider></v-divider>
+    <example-handler></example-handler>
   </div>
 </template>
 
 <script>
+import ExampleHandler from "./ExampleHandler.vue";
+
 export default {
+  components: {
+    ExampleHandler,
+  },
   data: () => ({
     ctrl: false,
     regular: true,
@@ -234,8 +169,27 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .conjugation-table {
   list-style: none;
+}
+.case-column {
+  width: 5rem;
+  text-align: center;
+  border-right: 1px solid lightgray;
+  background: lightsteelblue;
+}
+.table-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+.table-input:focus-visible {
+  outline: none;
+  border-bottom: 2px solid lightsteelblue;
+}
+.theme--light.v-data-table.v-data-table--fixed-header thead th {
+  background: lightsteelblue;
 }
 </style>
