@@ -31,6 +31,7 @@
             <th class='ma-1 pa-1 case-column text-center text-h7'>Case</th>
             <th class='ma-1 pa-1 text-center text-h7'>Present</th>
             <th class='ma-1 pa-1 text-center text-h7'>Simple Past</th>
+            <th class='ma-1 pa-1 text-center text-h7'>Imperative</th>
             <th class='ma-1 pa-1 text-center text-h8'>aux verb</th>
             <th class='ma-1 pa-1 text-center text-h7'>Future I</th>
             <th class='ma-1 pa-1 text-center text-h7'>Future II</th>
@@ -42,6 +43,7 @@
             <td class='case-column ma-1 pa-1'>ich</td>
             <td> <input type="text" v-model='conjugation.ich' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.ich' class='table-input py-0 px-2 text-center'> </td>
+            <td class='unused'> </td>
             <td> werde </td>
             <td> {{conjugation.ich}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -51,6 +53,7 @@
             <td class='case-column ma-1 pa-1'>du</td>
             <td> <input type="text" v-model='conjugation.du' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.du' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='imperative.du' class='table-input py-0 px-2 text-center'> </td>
             <td> wirst </td>
             <td> {{conjugation.du}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -60,6 +63,7 @@
             <td class='case-column ma-1 pa-1'>er/sie/es</td>
             <td> <input type="text" v-model='conjugation.erSieEs' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.erSieEs' class='table-input py-0 px-2 text-center'> </td>
+            <td class='unused'> </td>
             <td> wird </td>
             <td> {{conjugation.erSieEs}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -69,6 +73,7 @@
             <td class='case-column ma-1 pa-1'>wir</td>
             <td> <input type="text" v-model='conjugation.wir' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.wir' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='imperative.wir' class='table-input py-0 px-2 text-center'> </td>
             <td> werden </td>
             <td> {{conjugation.wir}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -78,6 +83,7 @@
             <td class='case-column ma-1 pa-1'>ihr</td>
             <td> <input type="text" v-model='conjugation.ihr' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.ihr' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='imperative.ihr' class='table-input py-0 px-2 text-center'> </td>
             <td> werdet </td>
             <td> {{conjugation.ihr}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -87,6 +93,7 @@
             <td class='case-column ma-1 pa-1'>Sie</td>
             <td> <input type="text" v-model='conjugation.Sie' class='table-input py-0 px-2 text-center'> </td>
             <td> <input type="text" v-model='simplePast.Sie' class='table-input py-0 px-2 text-center'> </td>
+            <td> <input type="text" v-model='imperative.Sie' class='table-input py-0 px-2 text-center'> </td>
             <td> werden </td>
             <td> {{conjugation.Sie}} </td>
             <td> {{pastParticiple.word}} </td>
@@ -130,6 +137,12 @@ export default {
       word: '',
       auxiliaryVerb: ''
     },
+    imperative: {
+      du: '',
+      wir: '',
+      ihr: '',
+      Sie: '',
+    },
     auxiliaryVerbOptions: ['haben', 'sein']
   }),
   props: {
@@ -148,9 +161,9 @@ export default {
         ich: stem + "e",
         du: stem + "st",
         erSieEs: stem + "t",
-        wir: this.baseWord,
+        wir: this.baseWord.toLowerCase(),
         ihr: stem + "t",
-        Sie: this.baseWord,
+        Sie: this.baseWord.toLowerCase(),
       };
       this.simplePast = {
         ich: stem + "te",
@@ -164,6 +177,19 @@ export default {
         word: stem.endsWith('t') ? 'ge' + stem + 'et' : 'ge' + stem + 't',
         auxiliaryVerb: 'haben'
       }
+      this.imperative = {
+        du: stem,
+        wir: this.baseWord.toLowerCase(),
+        ihr: stem + 't',
+        Sie: this.baseWord.toLowerCase(),
+      }
+      const imperativeEndings = ['d', 't', 'n', 'ig', 'ir', 'el']
+      imperativeEndings.forEach(ending => {
+        if(stem.endsWith(ending)) {
+          this.imperative.du += 'e'
+        }
+      });
+
     },
   },
 };
@@ -191,5 +217,8 @@ export default {
 }
 .theme--light.v-data-table.v-data-table--fixed-header thead th {
   background: lightsteelblue;
+}
+.unused {
+  background: #E8E8E8;
 }
 </style>
